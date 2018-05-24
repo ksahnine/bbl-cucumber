@@ -1,0 +1,46 @@
+version: '3'
+services:
+
+    web:
+        image: nginx
+        container_name: web-1
+        volumes:
+            #- ./front/dist:/usr/share/nginx/html
+            - ./front/conf/nginx.dev.conf:/etc/nginx/nginx.conf
+        ports:
+            - "80:80"
+        depends_on:
+            - angular
+        networks:
+            - app-network
+
+    angular:
+        image: trion/ng-cli:1.7.3
+        container_name: angular
+        #build: .
+        working_dir: /app
+        volumes:
+            - "./front:/app"
+        ports:
+            - "4200:4200"
+        command: bash -c "npm install && ng serve -H 0.0.0.0 --disable-host-check"
+        depends_on:
+            - api
+        networks:
+            - app-network
+
+    api:
+        image: payara/micro
+        container_name: api
+        volumes:
+            - "./back/target:/opt/payara/deployments"
+        ports:
+            - "8080:8080"
+        command: java -jar /opt/payara/payara-micro.jar --deploy /opt/payara/deployments/api.war
+        restart: always
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge

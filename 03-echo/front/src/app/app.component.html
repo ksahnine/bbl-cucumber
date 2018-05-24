@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Brand new echo app !!</span>
+    <span class="toolbar-spacer"></span>
+    <button mat-button>About</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-card>
+  <mat-card-title>
+    Faire de l'écho
+  </mat-card-title>
+  <mat-card-content>
+    <div class="form-container">
+      <mat-form-field>
+        <input name="message" matInput [(ngModel)]="request.content" placeholder="Saisir votre message">
+      </mat-form-field>
+      <mat-radio-group [(ngModel)]="request.type">
+        <mat-radio-button name="strict" value="strict">Echo strict</mat-radio-button>
+        <mat-radio-button name="uppercase" value="uppercase">Echo en majuscules</mat-radio-button>
+        <mat-radio-button name="lowercase" value="lowercase">Echo en minuscules</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="right">
+    <button name="sendBtn" mat-mini-fab color="primary" (click)="send()">
+      <mat-icon aria-label="Ajouter l'article">record_voice_over</mat-icon>
+    </button>
+  </mat-card-actions>
+  <mat-card-content class="center">
+    <h1 name="response" *ngIf="response">{{response.content}}</h1>
+  </mat-card-content>
+</mat-card>
+
+<router-outlet></router-outlet>
